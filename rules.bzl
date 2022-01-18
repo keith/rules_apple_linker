@@ -28,9 +28,16 @@ def _attrs(linker, extra_attrs):
             default = True,
             doc = "Whether to enable the overriden linker, useful for disabling with select",
         ),
+        "_macos_platform": attr.label(default = Label("@platforms//os:macos")),
     }
     attrs.update(extra_attrs)
     return attrs
+
+# TODO: This isn't ideal, since technically maybe we could target an Apple platform while building on Linux
+def _is_apple_build(ctx):
+    return ctx.target_platform_has_constraint(
+        ctx.attr._macos_platform[platform_common.ConstraintValueInfo],
+    )
 
 def _linker_override(ctx, override_linkopts):
     """Construct the providers to override the linker
@@ -43,7 +50,12 @@ def _linker_override(ctx, override_linkopts):
     if not ctx.attr.linker:
         fail("error: linker not specified")
 
-    # TODO: Disable on non macOS
+    if not _is_apple_build(ctx):
+        return [
+            apple_common.new_objc_provider(),
+            CcInfo(),
+        ]
+
     linkopts = list(ctx.attr.linkopts)
     if ctx.attr.enable:
         linker_inputs_depset = ctx.attr.linker.files
@@ -60,6 +72,10 @@ def _linker_override(ctx, override_linkopts):
 
     linkopts_depset = depset(direct = linkopts, order = "topological")
     return [
+        apple_common.new_objc_provider(
+            link_inputs = linker_inputs_depset,
+            linkopt = linkopts_depset,
+        ),
         CcInfo(
             linking_context = cc_common.create_linking_context(
                 linker_inputs = depset([
@@ -70,10 +86,6 @@ def _linker_override(ctx, override_linkopts):
                     ),
                 ]),
             ),
-        ),
-        apple_common.new_objc_provider(
-            link_inputs = linker_inputs_depset,
-            linkopt = linkopts_depset,
         ),
     ]
 

@@ -66,11 +66,13 @@ swift_binary(
 objc_library(
     name = "objc_binary_lib",
     srcs = ["main.c"],
+    tags = ["manual"],
 )
 
 macos_command_line_application(
     name = "command_line_tool",
     minimum_os_version = "10.15",
+    tags = ["manual"],
     target_compatible_with = ["@platforms//os:macos"],
     deps = [
         ":objc_binary_lib",
@@ -121,7 +123,7 @@ action_command_line_test(
     ],
     mnemonic = "CppLink",
     target_compatible_with = ["@platforms//os:macos"],
-    target_under_test = ":ios_unit_test.__internal__.__test_bundle", # Internal binary rule does the link
+    target_under_test = ":ios_unit_test.__internal__.__test_bundle",  # Internal binary rule does the link
 )
 
 action_command_line_test(
@@ -153,6 +155,14 @@ action_command_line_test(
     expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
     mnemonic = "CppLink",
     target_compatible_with = ["@platforms//os:macos"],
+    target_under_test = ":zld_test",
+)
+
+action_command_line_test(
+    name = "use_zld_test_linux",
+    mnemonic = "CppLink",
+    not_expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
+    target_compatible_with = ["@platforms//os:linux"],
     target_under_test = ":zld_test",
 )
 
