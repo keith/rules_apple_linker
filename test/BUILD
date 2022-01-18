@@ -71,7 +71,6 @@ objc_library(
 macos_command_line_application(
     name = "command_line_tool",
     minimum_os_version = "10.15",
-    target_compatible_with = ["@platforms//os:macos"],
     deps = [
         ":objc_binary_lib",
         "@rules_apple_linker//:zld",
@@ -82,7 +81,6 @@ ios_unit_test(
     name = "ios_unit_test",
     minimum_os_version = "10.0",
     tags = ["manual"],
-    target_compatible_with = ["@platforms//os:macos"],
     deps = [
         ":objc_binary_lib",
         ":zld",
@@ -93,7 +91,6 @@ action_command_line_test(
     name = "use_lld_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
     mnemonic = "CppLink",
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":lld_test",
 )
 
@@ -101,7 +98,6 @@ action_command_line_test(
     name = "lld_swift_binary_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
     mnemonic = "CppLink",
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":swift_binary",
 )
 
@@ -109,7 +105,6 @@ action_command_line_test(
     name = "command_line_tool_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
     mnemonic = "CppLink",
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":command_line_tool",
 )
 
@@ -120,7 +115,6 @@ action_command_line_test(
         "-Wl,-sectcreate,ZLD,ENABLED,/dev/null",
     ],
     mnemonic = "CppLink",
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":ios_unit_test.__internal__.__test_bundle",  # Internal binary rule does the link
 )
 
@@ -132,7 +126,6 @@ action_command_line_test(
     ],
     mnemonic = "CppLink",
     not_expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":lld_disabled_test",
 )
 
@@ -144,7 +137,6 @@ action_command_line_test(
     ],
     mnemonic = "CppLink",
     not_expected_argv = ["-Wl,-add_empty_section,LD64,ENABLED"],
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":lld_linkopts_test",
 )
 
@@ -152,7 +144,6 @@ action_command_line_test(
     name = "use_zld_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
     mnemonic = "CppLink",
-    target_compatible_with = ["@platforms//os:macos"],
     target_under_test = ":zld_test",
 )
 
