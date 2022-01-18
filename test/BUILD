@@ -90,21 +90,24 @@ ios_unit_test(
 action_command_line_test(
     name = "use_lld_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     target_under_test = ":lld_test",
 )
 
 action_command_line_test(
     name = "lld_swift_binary_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     target_under_test = ":swift_binary",
 )
 
 action_command_line_test(
     name = "command_line_tool_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
-    mnemonic = "CppLink",
+    mnemonics = [
+        "CppLink",
+        "ObjcLink",
+    ],  # TODO: Remove CppLink once we support bazel 5.x+ only
     target_under_test = ":command_line_tool",
 )
 
@@ -114,7 +117,10 @@ action_command_line_test(
         "--ld-path=external/rules_apple_linker_zld/zld",
         "-Wl,-sectcreate,ZLD,ENABLED,/dev/null",
     ],
-    mnemonic = "CppLink",
+    mnemonics = [
+        "CppLink",
+        "ObjcLink",
+    ],  # TODO: Remove CppLink once we support bazel 5.x+ only
     target_under_test = ":ios_unit_test.__internal__.__test_bundle",  # Internal binary rule does the link
 )
 
@@ -124,7 +130,7 @@ action_command_line_test(
         "-Wl,-add_empty_section,LD64,ENABLED",
         "-Wl,-sectcreate,SHARED,LINKOPT,/dev/null",
     ],
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     not_expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
     target_under_test = ":lld_disabled_test",
 )
@@ -135,7 +141,7 @@ action_command_line_test(
         "-Wl,-sectcreate,LLD,ENABLED,/dev/null",
         "-Wl,-sectcreate,SHARED,LINKOPT,/dev/null",
     ],
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     not_expected_argv = ["-Wl,-add_empty_section,LD64,ENABLED"],
     target_under_test = ":lld_linkopts_test",
 )
@@ -143,13 +149,13 @@ action_command_line_test(
 action_command_line_test(
     name = "use_zld_test",
     expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     target_under_test = ":zld_test",
 )
 
 action_command_line_test(
     name = "default_linker_test",
-    mnemonic = "CppLink",
+    mnemonics = ["CppLink"],
     not_expected_argv = [
         "--ld-path=external/rules_apple_linker_lld/ld64.lld",
         "--ld-path=external/rules_apple_linker_zld/zld",

@@ -25,11 +25,11 @@ def _action_command_line_test_impl(ctx):
 
     # Find the desired action and verify that there is exactly one.
     actions = analysistest.target_actions(env)
-    mnemonic = ctx.attr.mnemonic
+    mnemonics = ctx.attr.mnemonics
     matching_actions = [
         action
         for action in actions
-        if action.mnemonic == mnemonic
+        if action.mnemonic in mnemonics
     ]
     if not matching_actions:
         actual_mnemonics = collections.uniq(
@@ -40,7 +40,7 @@ def _action_command_line_test_impl(ctx):
             ("Target '{}' registered no actions with the mnemonic '{}' " +
              "(it had {}).").format(
                 str(target_under_test.label),
-                mnemonic,
+                mnemonics,
                 actual_mnemonics,
             ),
         )
@@ -50,7 +50,7 @@ def _action_command_line_test_impl(ctx):
             env,
             ("Expected exactly one action with the mnemonic '{}', " +
              "but found {}.").format(
-                mnemonic,
+                mnemonics,
                 len(matching_actions),
             ),
         )
@@ -58,7 +58,7 @@ def _action_command_line_test_impl(ctx):
 
     action = matching_actions[0]
     message_prefix = "In {} action for target '{}', ".format(
-        mnemonic,
+        mnemonics,
         str(target_under_test.label),
     )
 
@@ -120,10 +120,10 @@ command line, after concatenating all command line arguments into a single
 space-delimited string.
 """,
             ),
-            "mnemonic": attr.string(
+            "mnemonics": attr.string_list(
                 mandatory = True,
                 doc = """\
-The mnemonic of the action to be inspected on the target under test. It is
+The mnemonic(s) of the action to be inspected on the target under test. It is
 expected that there will be exactly one of these.
 """,
             ),
