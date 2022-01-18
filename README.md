@@ -146,6 +146,7 @@ like to use this with an older version please [open an issue][newissue]!
 [issue]: https://github.com/keith/rules_apple_linker/issues/1
 [linkopt]: https://docs.bazel.build/versions/main/command-line-reference.html#flag--linkopt
 [lld]: https://lld.llvm.org/
+[llddocs]: https://github.com/llvm/llvm-project/blob/main/lld/MachO/ld64-vs-lld.rst
 [newissue]: https://github.com/keith/rules_apple_linker/issues/new
 [releases]: https://github.com/keith/rules_apple_linker/releases
 [rules_apple]: https://github.com/bazelbuild/rules_apple
