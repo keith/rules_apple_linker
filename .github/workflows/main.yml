@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_13.0.app
+      - run: USE_BAZEL_VERSION=4.2.2 bazelisk test //...
+      - run: USE_BAZEL_VERSION=last_rc bazelisk test //...
+      - run: bazelisk test //...
