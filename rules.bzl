@@ -28,16 +28,9 @@ def _attrs(linker, extra_attrs):
             default = True,
             doc = "Whether to enable the overriden linker, useful for disabling with select",
         ),
-        "_macos_platform": attr.label(default = Label("@platforms//os:macos")),
     }
     attrs.update(extra_attrs)
     return attrs
-
-# TODO: This isn't ideal, since technically maybe we could target an Apple platform while building on Linux
-def _is_apple_build(ctx):
-    return ctx.target_platform_has_constraint(
-        ctx.attr._macos_platform[platform_common.ConstraintValueInfo],
-    )
 
 def _linker_override(ctx, override_linkopts):
     """Construct the providers to override the linker
@@ -49,12 +42,6 @@ def _linker_override(ctx, override_linkopts):
 
     if not ctx.attr.linker:
         fail("error: linker not specified")
-
-    if not _is_apple_build(ctx):
-        return [
-            apple_common.new_objc_provider(),
-            CcInfo(),
-        ]
 
     linkopts = list(ctx.attr.linkopts)
     if ctx.attr.enable:
