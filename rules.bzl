@@ -19,15 +19,12 @@ def _attrs(linker, extra_attrs):
             doc = "The linker to use",
         ),
         "ld64_linkopts": attr.string_list(
-            mandatory = False,
             doc = "The options to pass to ld64 if 'enable' is False",
         ),
         "linkopts": attr.string_list(
-            mandatory = False,
             doc = "The options to pass to both the overriden linker and ld64",
         ),
         "enable": attr.bool(
-            mandatory = False,
             default = True,
             doc = "Whether to enable the overriden linker, useful for disabling with select",
         ),
@@ -35,12 +32,12 @@ def _attrs(linker, extra_attrs):
     attrs.update(extra_attrs)
     return attrs
 
-def _linker_override(ctx, overriden_linkopts):
+def _linker_override(ctx, override_linkopts):
     """Construct the providers to override the linker
 
     Args:
         ctx: The rule context, expected to have some shared attrs
-        overriden_linkopts: Linker options to use with the custom linker
+        override_linkopts: Linker options to use with the custom linker
     """
 
     if not ctx.attr.linker:
@@ -56,7 +53,7 @@ def _linker_override(ctx, overriden_linkopts):
                 targets = [ctx.attr.linker],
             ),
         )
-        linkopts.extend(overriden_linkopts)
+        linkopts.extend(override_linkopts)
     else:
         linker_inputs_depset = depset([])
         linkopts.extend(ctx.attr.ld64_linkopts)
@@ -80,51 +77,51 @@ def _linker_override(ctx, overriden_linkopts):
         ),
     ]
 
-def _apple_linker_override_impl(ctx):
-    return _linker_override(ctx, ctx.attr.overriden_linkopts)
+def _apple_linker_override(ctx):
+    return _linker_override(ctx, ctx.attr.override_linkopts)
 
 apple_linker_override = rule(
-    implementation = _apple_linker_override_impl,
+    implementation = _apple_linker_override,
     attrs = _attrs(
         None,
         {
-            "overriden_linkopts": attr.string_list(
+            "override_linkopts": attr.string_list(
                 mandatory = False,
-                doc = "The options to pass to the custom linker, and not ld64",
+                doc = "The options to pass to the custom linker, and not ld64 (see enable)",
             ),
         },
     ),
     provides = [apple_common.Objc, CcInfo],
 )
 
-def _zld_impl(ctx):
+def _zld_override(ctx):
     return _linker_override(ctx, ctx.attr.zld_linkopts)
 
-zld = rule(
-    implementation = _zld_impl,
+zld_override = rule(
+    implementation = _zld_override,
     attrs = _attrs(
         "@rules_apple_linker_zld//:zld_bin",
         {
             "zld_linkopts": attr.string_list(
                 mandatory = False,
-                doc = "The options to pass to zld, and not ld64",
+                doc = "The options to pass to zld, and not ld64 (see enable)",
             ),
         },
     ),
     provides = [apple_common.Objc, CcInfo],
 )
 
-def _lld_impl(ctx):
+def _lld_override(ctx):
     return _linker_override(ctx, ctx.attr.lld_linkopts)
 
-lld = rule(
-    implementation = _lld_impl,
+lld_override = rule(
+    implementation = _lld_override,
     attrs = _attrs(
         "@rules_apple_linker_lld//:lld_bin",
         {
             "lld_linkopts": attr.string_list(
                 mandatory = False,
-                doc = "The options to pass to lld, and not ld64",
+                doc = "The options to pass to lld, and not ld64 (see enable)",
             ),
         },
     ),
