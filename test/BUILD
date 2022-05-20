@@ -52,6 +52,12 @@ cc_test(
     deps = ["@rules_apple_linker//:zld"],
 )
 
+cc_test(
+    name = "mold_test",
+    srcs = ["main.c"],
+    deps = ["@rules_apple_linker//:mold"],
+)
+
 cc_library(
     name = "binary_lib",
     srcs = ["main.c"],
@@ -158,7 +164,15 @@ action_command_line_test(
     mnemonics = ["CppLink"],
     not_expected_argv = [
         "--ld-path=external/rules_apple_linker_lld/ld64.lld",
+        "--ld-path=external/rules_apple_linker_mold/mold",
         "--ld-path=external/rules_apple_linker_zld/zld",
     ],
     target_under_test = ":default_test",
+)
+
+action_command_line_test(
+    name = "use_mold_test",
+    expected_argv = ["--ld-path=external/rules_apple_linker_mold/mold"],
+    mnemonics = ["CppLink"],
+    target_under_test = ":mold_test",
 )
