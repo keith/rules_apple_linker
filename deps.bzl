@@ -8,8 +8,8 @@ def rules_apple_linker_deps():
     http_archive(
         name = "rules_apple_linker_zld",
         build_file_content = 'filegroup(name = "zld_bin", srcs = ["zld"], visibility = ["//visibility:public"])',
-        sha256 = "dee657c070e9553a47a09f55800a24f978887929eef7ab27472af48bf068f566",
-        url = "https://github.com/michaeleisel/zld/releases/download/1.3.3/zld.zip",
+        sha256 = "b1897fbe2a2e27241d993d1ae55b5622efd9725139e8b9486b5d6e86cc291415",
+        url = "https://github.com/michaeleisel/zld/releases/download/1.3.7/zld.zip",
     )
 
     http_archive(
