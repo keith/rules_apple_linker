@@ -46,12 +46,7 @@ def _linker_override(ctx, override_linkopts):
     linkopts = list(ctx.attr.linkopts)
     if ctx.attr.enable:
         linker_inputs_depset = ctx.attr.linker.files
-        linkopts.append(
-            ctx.expand_location(
-                "--ld-path=$(location {})".format(ctx.attr.linker.label),
-                targets = [ctx.attr.linker],
-            ),
-        )
+        linkopts.append("--ld-path={}".format(ctx.file.linker.path))
         linkopts.extend(override_linkopts)
     else:
         linker_inputs_depset = depset([])
