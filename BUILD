@@ -1,4 +1,4 @@
-load("@rules_apple_linker//:rules.bzl", "lld_override", "zld_override")
+load("@rules_apple_linker//:rules.bzl", "lld_override", "mold_override", "zld_override")
 
 zld_override(
     name = "zld",
@@ -7,5 +7,10 @@ zld_override(
 
 lld_override(
     name = "lld",
+    visibility = ["//visibility:public"],
+)
+
+mold_override(
+    name = "mold",
     visibility = ["//visibility:public"],
 )

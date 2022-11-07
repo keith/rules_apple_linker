@@ -121,3 +121,20 @@ lld_override = rule(
     ),
     provides = [apple_common.Objc, CcInfo],
 )
+
+def _mold_override(ctx):
+    return _linker_override(ctx, ctx.attr.mold_linkopts)
+
+mold_override = rule(
+    implementation = _mold_override,
+    attrs = _attrs(
+        "@rules_apple_linker_mold//:mold_bin",
+        {
+            "mold_linkopts": attr.string_list(
+                mandatory = False,
+                doc = "The options to pass to mold, and not ld64 (see enable)",
+            ),
+        },
+    ),
+    provides = [apple_common.Objc, CcInfo],
+)

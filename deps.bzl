@@ -18,3 +18,10 @@ def rules_apple_linker_deps():
         sha256 = "28566b943082349269b6460a5c23a305a73460bac54f5cd21eb490ff7d84fed7",
         url = "https://github.com/keith/ld64.lld/releases/download/10-14-22/ld64.tar.xz",
     )
+
+    http_archive(
+        name = "rules_apple_linker_mold",
+        build_file_content = 'filegroup(name = "mold_bin", srcs = ["ld64.mold"], visibility = ["//visibility:public"])',
+        sha256 = "2b1ab27d4ab0d6319cf79b6bc94710e8a515c069670191dea022c3dffaef64fd",
+        url = "https://github.com/keith/ld64.mold/releases/download/11-7-22/ld64.tar.xz",
+    )
