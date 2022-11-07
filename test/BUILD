@@ -55,6 +55,7 @@ cc_test(
 cc_test(
     name = "mold_test",
     srcs = ["main.c"],
+    features = ["-dynamic_linking_mode"],  # TODO: https://github.com/bazelbuild/bazel/pull/16414
     deps = ["@rules_apple_linker//:mold"],
 )
 
