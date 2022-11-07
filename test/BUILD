@@ -164,7 +164,7 @@ action_command_line_test(
     mnemonics = ["CppLink"],
     not_expected_argv = [
         "--ld-path=external/rules_apple_linker_lld/ld64.lld",
-        "--ld-path=external/rules_apple_linker_mold/mold",
+        "--ld-path=external/rules_apple_linker_mold/ld64.mold",
         "--ld-path=external/rules_apple_linker_zld/zld",
     ],
     target_under_test = ":default_test",
@@ -172,7 +172,7 @@ action_command_line_test(
 
 action_command_line_test(
     name = "use_mold_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_mold/mold"],
+    expected_argv = ["--ld-path=external/rules_apple_linker_mold/ld64.mold"],
     mnemonics = ["CppLink"],
     target_under_test = ":mold_test",
 )
