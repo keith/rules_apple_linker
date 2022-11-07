@@ -1,1 +1,4 @@
+# TODO: Remove once mold supports -S
+build --strip=never
+
 test --test_output=errors
