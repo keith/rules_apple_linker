@@ -15,8 +15,8 @@ def rules_apple_linker_deps():
     http_archive(
         name = "rules_apple_linker_lld",
         build_file_content = 'filegroup(name = "lld_bin", srcs = ["ld64.lld"], visibility = ["//visibility:public"])',
-        sha256 = "617169bf867998580674374d8f9414a0b5bf208b4a94e7a315de92bb1bdd8561",
-        url = "https://github.com/keith/ld64.lld/releases/download/12-9-22/ld64.tar.xz",
+        sha256 = "c4212126260d22c132296e9e0284c50ee29a76f8e791cdaa2116c0eb3892576f",
+        url = "https://github.com/keith/ld64.lld/releases/download/12-14-22/ld64.tar.xz",
     )
 
     http_archive(
