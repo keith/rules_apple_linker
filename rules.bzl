@@ -2,6 +2,12 @@
 Rules for overridding the linker for Apple builds
 """
 
+load("@bazel_skylib//lib:partial.bzl", "partial")
+load(
+    "@build_bazel_rules_apple//apple/internal:partials.bzl",
+    "partials",
+)
+
 def _attrs(linker, extra_attrs):
     """
     Get the shared attributes for all the linker rules
@@ -53,6 +59,16 @@ def _linker_override(ctx, override_linkopts):
         linkopts.extend(ctx.attr.ld64_linkopts)
 
     linkopts_depset = depset(direct = linkopts, order = "topological")
+
+    # Add `_AppleExtensionSafeValidationInfo` to support extension safe binaries.
+    partial_output = partial.call(
+        partials.extension_safe_validation_partial(
+            is_extension_safe = True,
+            rule_label = ctx.label,
+            targets_to_validate = [],
+        ),
+    )
+
     return [
         apple_common.new_objc_provider(
             link_inputs = linker_inputs_depset,
@@ -69,7 +85,7 @@ def _linker_override(ctx, override_linkopts):
                 ]),
             ),
         ),
-    ]
+    ] + partial_output.providers
 
 def _apple_linker_override(ctx):
     return _linker_override(ctx, ctx.attr.override_linkopts)
