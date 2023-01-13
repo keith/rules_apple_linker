@@ -17,13 +17,6 @@ def rules_apple_linker_deps():
         url = "https://github.com/keith/ld64.lld/releases/download/12-22-22/ld64.tar.xz",
     )
 
-    http_archive(
-        name = "rules_apple_linker_mold",
-        build_file_content = 'filegroup(name = "mold_bin", srcs = ["ld64.mold"], visibility = ["//visibility:public"])',
-        sha256 = "2b1ab27d4ab0d6319cf79b6bc94710e8a515c069670191dea022c3dffaef64fd",
-        url = "https://github.com/keith/ld64.mold/releases/download/11-7-22/ld64.tar.xz",
-    )
-
 def _impl(_):
     rules_apple_linker_deps()
 
