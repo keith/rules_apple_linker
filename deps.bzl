@@ -1,6 +1,4 @@
-"""
-Register default linker downloads
-"""
+"""Register default linker downloads"""
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -25,3 +23,8 @@ def rules_apple_linker_deps():
         sha256 = "2b1ab27d4ab0d6319cf79b6bc94710e8a515c069670191dea022c3dffaef64fd",
         url = "https://github.com/keith/ld64.mold/releases/download/11-7-22/ld64.tar.xz",
     )
+
+def _impl(_):
+    rules_apple_linker_deps()
+
+linker_deps = module_extension(implementation = _impl)

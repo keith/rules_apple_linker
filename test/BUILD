@@ -98,21 +98,21 @@ ios_unit_test(
 
 action_command_line_test(
     name = "use_lld_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld"],
     mnemonics = ["CppLink"],
     target_under_test = ":lld_test",
 )
 
 action_command_line_test(
     name = "lld_swift_binary_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld"],
     mnemonics = ["CppLink"],
     target_under_test = ":swift_binary",
 )
 
 action_command_line_test(
     name = "command_line_tool_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld"],
     mnemonics = [
         "CppLink",
         "ObjcLink",
@@ -123,7 +123,7 @@ action_command_line_test(
 action_command_line_test(
     name = "ios_unit_test_test",
     expected_argv = [
-        "--ld-path=external/rules_apple_linker_zld/zld",
+        "--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld",
         "-Wl,-sectcreate,ZLD,ENABLED,/dev/null",
     ],
     mnemonics = [
@@ -140,7 +140,7 @@ action_command_line_test(
         "-Wl,-sectcreate,SHARED,LINKOPT,/dev/null",
     ],
     mnemonics = ["CppLink"],
-    not_expected_argv = ["--ld-path=external/rules_apple_linker_lld/ld64.lld"],
+    not_expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld"],
     target_under_test = ":lld_disabled_test",
 )
 
@@ -157,7 +157,7 @@ action_command_line_test(
 
 action_command_line_test(
     name = "use_zld_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_zld/zld"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld"],
     mnemonics = ["CppLink"],
     target_under_test = ":zld_test",
 )
@@ -166,16 +166,16 @@ action_command_line_test(
     name = "default_linker_test",
     mnemonics = ["CppLink"],
     not_expected_argv = [
-        "--ld-path=external/rules_apple_linker_lld/ld64.lld",
-        "--ld-path=external/rules_apple_linker_mold/ld64.mold",
-        "--ld-path=external/rules_apple_linker_zld/zld",
+        "--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld",
+        "--ld-path=external/$(BZLMOD)rules_apple_linker_mold/ld64.mold",
+        "--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld",
     ],
     target_under_test = ":default_test",
 )
 
 action_command_line_test(
     name = "use_mold_test",
-    expected_argv = ["--ld-path=external/rules_apple_linker_mold/ld64.mold"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_mold/ld64.mold"],
     mnemonics = ["CppLink"],
     target_under_test = ":mold_test",
 )
