@@ -52,15 +52,6 @@ cc_test(
     deps = ["@rules_apple_linker//:zld"],
 )
 
-cc_test(
-    name = "mold_test",
-    srcs = ["main.c"],
-    features = [
-        "-dynamic_linking_mode",  # TODO: https://github.com/bazelbuild/bazel/pull/16414
-    ],
-    deps = ["@rules_apple_linker//:mold"],
-)
-
 cc_library(
     name = "binary_lib",
     srcs = ["main.c"],
@@ -167,15 +158,7 @@ action_command_line_test(
     mnemonics = ["CppLink"],
     not_expected_argv = [
         "--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld",
-        "--ld-path=external/$(BZLMOD)rules_apple_linker_mold/ld64.mold",
         "--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld",
     ],
     target_under_test = ":default_test",
-)
-
-action_command_line_test(
-    name = "use_mold_test",
-    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_mold/ld64.mold"],
-    mnemonics = ["CppLink"],
-    target_under_test = ":mold_test",
 )
