@@ -66,8 +66,10 @@ def _action_command_line_test_impl(ctx):
     # for subsequences of arguments. Note that we append an extra space to the
     # end and look for arguments followed by a trailing space so that having
     # `-foo` in the expected list doesn't match `-foobar`, for example.
+    workspace_prefix = "_main~linker_deps~" if ctx.workspace_name == "_main" else ""
     concatenated_args = " ".join(action.argv) + " "
     for expected in ctx.attr.expected_argv:
+        expected = expected.replace("$(BZLMOD)", workspace_prefix)
         if expected + " " not in concatenated_args:
             unittest.fail(
                 env,
@@ -78,6 +80,7 @@ def _action_command_line_test_impl(ctx):
                 ),
             )
     for not_expected in ctx.attr.not_expected_argv:
+        not_expected = not_expected.replace("$(BZLMOD)", workspace_prefix)
         if not_expected + " " in concatenated_args:
             unittest.fail(
                 env,
