@@ -1,4 +1,9 @@
 build --remote_cache=grpcs://remote.buildbuddy.io
 build --remote_timeout=3600
 
+build --enable_platform_specific_config
+build:macos --apple_crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --host_crosstool_top=@local_config_apple_cc//:toolchain
+
 test --test_output=errors
