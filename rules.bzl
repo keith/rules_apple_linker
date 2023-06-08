@@ -13,7 +13,6 @@ def _attrs(linker, extra_attrs):
     attrs = {
         "linker": attr.label(
             default = linker,
-            allow_single_file = True,
             executable = True,
             cfg = "exec",
             doc = "The linker to use",
@@ -45,8 +44,8 @@ def _linker_override(ctx, override_linkopts):
 
     linkopts = list(ctx.attr.linkopts)
     if ctx.attr.enable:
-        linker_inputs_depset = ctx.attr.linker.files
-        linkopts.append("--ld-path={}".format(ctx.file.linker.path))
+        linker_inputs_depset = ctx.attr.linker[DefaultInfo].files
+        linkopts.append("--ld-path={}".format(ctx.attr.linker[DefaultInfo].files_to_run.executable.path))
         linkopts.extend(override_linkopts)
     else:
         linker_inputs_depset = depset([])
