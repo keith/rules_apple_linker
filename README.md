@@ -20,14 +20,6 @@ The default linker for MachO binaries is maintained by Apple and
 generally referred to as `ld64` (even though the binary is still `ld`).
 Currently there are 2 primary alternatives:
 
-### zld
-
-[`zld`][zld] is a fork of `ld64` that optimizes performance. This means
-you likely get output that is very similar to what `ld64` produces.
-Unfortunately the base of `zld` naturally lags behind changes in `ld64`
-because Apple doesn't often push their changes. This means theoretically
-some features could be a bit behind what you get with Xcode's version.
-
 ### lld
 
 [`lld`][lld] is LLVM's linker. It is a completely separate
@@ -38,10 +30,9 @@ evolving quickly and is being used in production to link Chrome today.
 
 # Usage
 
-By default `rules_apple_linker` provides targets for `zld`
-(`@rules_apple_linker//:zld`) and `lld` (`@rules_apple_linker//:lld`)
-for you to use. To enable them add one of the rules to the `deps` of
-your targets:
+By default `rules_apple_linker` provides a target for `lld`
+(`@rules_apple_linker//:lld`) for you to use. To enable it add the
+target to the `deps` of your targets:
 
 ```bzl
 objc_library(
@@ -59,7 +50,7 @@ macro:
 
 ```bzl
 def my_custom_ios_unit_test(**kwargs):
-    deps = kwargs.pop("deps", []) + ["@rules_apple_linker//:zld"]
+    deps = kwargs.pop("deps", []) + ["@rules_apple_linker//:lld"]
     ios_unit_test(
         deps = deps,
         **kwargs
@@ -113,16 +104,16 @@ you want to use, you can pass the `linker` option when creating your own
 target:
 
 ```bzl
-load("@rules_apple_linker//:rules.bzl", "zld_override")
+load("@rules_apple_linker//:rules.bzl", "lld_override")
 
-zld_override(
-    name = "zld",
-    linker = "@zld//:my-newer-zld",
+lld_override(
+    name = "lld",
+    linker = "@lld//:my-newer-lld",
 )
 ```
 
-You can also use the `apple_linker_override` rule directly if
-you don't want `zld` or `lld` specific parameters.
+You can also use the `apple_linker_override` rule directly if you don't
+the `lld` specific parameters.
 
 ```bzl
 
@@ -150,4 +141,3 @@ like to use this with an older version please [open an issue][newissue]!
 [newissue]: https://github.com/keith/rules_apple_linker/issues/new
 [releases]: https://github.com/keith/rules_apple_linker/releases
 [rules_apple]: https://github.com/bazelbuild/rules_apple
-[zld]: https://github.com/michaeleisel/zld

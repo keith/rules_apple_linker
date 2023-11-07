@@ -4,7 +4,6 @@ tasks:
     platform: macos
     build_targets:
       - '@rules_apple_linker//:lld'
-      - '@rules_apple_linker//:zld'
 
 bcr_test_module:
   module_path: ""

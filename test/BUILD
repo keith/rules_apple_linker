@@ -1,5 +1,5 @@
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_binary")
-load("@rules_apple_linker//:rules.bzl", "lld_override", "zld_override")
+load("@rules_apple_linker//:rules.bzl", "lld_override")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_command_line_application")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load(":rules.bzl", "action_command_line_test")
@@ -16,11 +16,6 @@ lld_override(
     ld64_linkopts = ["-Wl,-add_empty_section,LD64,ENABLED"],
     linkopts = ["-Wl,-sectcreate,SHARED,LINKOPT,/dev/null"],
     lld_linkopts = ["-Wl,-sectcreate,LLD,ENABLED,/dev/null"],
-)
-
-zld_override(
-    name = "zld",
-    zld_linkopts = ["-Wl,-sectcreate,ZLD,ENABLED,/dev/null"],
 )
 
 cc_test(
@@ -46,12 +41,6 @@ cc_test(
     deps = [":lld"],
 )
 
-cc_test(
-    name = "zld_test",
-    srcs = ["main.c"],
-    deps = ["@rules_apple_linker//:zld"],
-)
-
 cc_library(
     name = "binary_lib",
     srcs = ["main.c"],
@@ -73,7 +62,7 @@ macos_command_line_application(
     minimum_os_version = "10.15",
     deps = [
         ":objc_binary_lib",
-        "@rules_apple_linker//:zld",
+        "@rules_apple_linker//:lld",
     ],
 )
 
@@ -82,8 +71,8 @@ ios_unit_test(
     minimum_os_version = "10.0",
     tags = ["manual"],
     deps = [
+        ":lld",
         ":objc_binary_lib",
-        ":zld",
     ],
 )
 
@@ -103,7 +92,7 @@ action_command_line_test(
 
 action_command_line_test(
     name = "command_line_tool_test",
-    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld"],
+    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld"],
     mnemonics = [
         "CppLink",
         "ObjcLink",
@@ -114,8 +103,8 @@ action_command_line_test(
 action_command_line_test(
     name = "ios_unit_test_test",
     expected_argv = [
-        "--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld",
-        "-Wl,-sectcreate,ZLD,ENABLED,/dev/null",
+        "--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld",
+        "-Wl,-sectcreate,LLD,ENABLED,/dev/null",
     ],
     mnemonics = [
         "CppLink",
@@ -147,18 +136,10 @@ action_command_line_test(
 )
 
 action_command_line_test(
-    name = "use_zld_test",
-    expected_argv = ["--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld"],
-    mnemonics = ["CppLink"],
-    target_under_test = ":zld_test",
-)
-
-action_command_line_test(
     name = "default_linker_test",
     mnemonics = ["CppLink"],
     not_expected_argv = [
         "--ld-path=external/$(BZLMOD)rules_apple_linker_lld/ld64.lld",
-        "--ld-path=external/$(BZLMOD)rules_apple_linker_zld/zld",
     ],
     target_under_test = ":default_test",
 )
