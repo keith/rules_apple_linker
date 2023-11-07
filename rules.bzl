@@ -87,23 +87,6 @@ apple_linker_override = rule(
     provides = [apple_common.Objc, CcInfo],
 )
 
-def _zld_override(ctx):
-    return _linker_override(ctx, ctx.attr.zld_linkopts)
-
-zld_override = rule(
-    implementation = _zld_override,
-    attrs = _attrs(
-        "@rules_apple_linker_zld//:zld_bin",
-        {
-            "zld_linkopts": attr.string_list(
-                mandatory = False,
-                doc = "The options to pass to zld, and not ld64 (see enable)",
-            ),
-        },
-    ),
-    provides = [apple_common.Objc, CcInfo],
-)
-
 def _lld_override(ctx):
     return _linker_override(ctx, ctx.attr.lld_linkopts)
 

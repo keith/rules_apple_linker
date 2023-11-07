@@ -13,7 +13,6 @@ non_module_deps = use_extension("//:deps.bzl", "linker_deps")
 use_repo(
     non_module_deps,
     "rules_apple_linker_lld",
-    "rules_apple_linker_zld",
 )
 
 apple_cc_configure = use_extension(
