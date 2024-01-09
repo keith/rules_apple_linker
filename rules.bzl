@@ -2,6 +2,9 @@
 Rules for overridding the linker for Apple builds
 """
 
+# TODO: Remove once we drop bazel 7.x support
+_HAS_OBJC_PROVIDER_LINKOPT = hasattr(apple_common.new_objc_provider(), "linkopt")
+
 def _attrs(linker, extra_attrs):
     """
     Get the shared attributes for all the linker rules
@@ -54,7 +57,7 @@ def _linker_override(ctx, override_linkopts):
     linkopts_depset = depset(direct = linkopts, order = "topological")
 
     objc_provider_kwargs = {}
-    if hasattr(apple_common.new_objc_provider(), "linkopt"):
+    if _HAS_OBJC_PROVIDER_LINKOPT:
         objc_provider_kwargs = {
             "linkopt": linkopts_depset,
             "link_inputs": linker_inputs_depset,
