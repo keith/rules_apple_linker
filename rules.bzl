@@ -52,11 +52,16 @@ def _linker_override(ctx, override_linkopts):
         linkopts.extend(ctx.attr.ld64_linkopts)
 
     linkopts_depset = depset(direct = linkopts, order = "topological")
+
+    objc_provider_kwargs = {}
+    if hasattr(apple_common.new_objc_provider(), "linkopt"):
+        objc_provider_kwargs = {
+            "linkopt": linkopts_depset,
+            "link_inputs": linker_inputs_depset,
+        }
+
     return [
-        apple_common.new_objc_provider(
-            link_inputs = linker_inputs_depset,
-            linkopt = linkopts_depset,
-        ),
+        apple_common.new_objc_provider(**objc_provider_kwargs),
         CcInfo(
             linking_context = cc_common.create_linking_context(
                 linker_inputs = depset([
