@@ -16,6 +16,7 @@ def _attrs(linker, extra_attrs):
     attrs = {
         "linker": attr.label(
             default = linker,
+            allow_files = True,
             executable = True,
             cfg = "exec",
             doc = "The linker to use",
