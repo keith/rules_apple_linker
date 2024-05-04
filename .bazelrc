@@ -1,3 +1,4 @@
+common --check_direct_dependencies=error
 common --lockfile_mode=off
 
 # TODO: Remove once lld ignores this

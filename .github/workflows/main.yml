@@ -20,5 +20,5 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_15.3.app
       - run: bazelisk test //...
       - run: USE_BAZEL_VERSION=rolling bazelisk test //...
-      - run: bazelisk test //... --enable_bzlmod
-      - run: USE_BAZEL_VERSION=rolling bazelisk test //... --enable_bzlmod
+      - run: bazelisk test //... --enable_bzlmod=false
+      - run: USE_BAZEL_VERSION=rolling bazelisk test //... --enable_bzlmod=false
