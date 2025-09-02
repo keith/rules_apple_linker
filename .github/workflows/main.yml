@@ -17,8 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_15.3.app
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
       - run: USE_BAZEL_VERSION=7.x bazelisk test //... --enable_bzlmod=false
       - run: bazelisk test //...
-      # TODO: Re-enable when we update rules_apple
-      # - run: USE_BAZEL_VERSION=rolling bazelisk test //...
+      - run: USE_BAZEL_VERSION=rolling bazelisk test //...
