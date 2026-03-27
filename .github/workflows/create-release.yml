@@ -48,7 +48,8 @@ jobs:
     with:
       tag_name: ${{ inputs.tag }}
       registry_fork: keith/bazel-central-registry
-      attest: true
+      # TODO: https://github.com/bazelbuild/bazel-central-registry/blob/5fe5410761c62795e06ed9555f17e59b31d4e830/tools/slsa.py#L36-L38
+      attest: false
     secrets:
       publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
     permissions:
