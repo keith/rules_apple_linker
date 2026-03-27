@@ -2,6 +2,9 @@
 Rules for overridding the linker for Apple builds
 """
 
+load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
+load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
+
 # TODO: Remove once we drop bazel 7.x support
 _HAS_OBJC_PROVIDER_LINKOPT = hasattr(apple_common.new_objc_provider(), "linkopt")
 

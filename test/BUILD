@@ -1,7 +1,10 @@
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_command_line_application")
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_binary")
 load("@rules_apple_linker//:rules.bzl", "lld_override")
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_command_line_application")
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 load(":rules.bzl", "action_command_line_test")
 
 lld_override(
