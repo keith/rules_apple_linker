@@ -1,0 +1,41 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'The new version to tag, ex: 1.0.5'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create Release
+        run: |
+          set -euo pipefail
+
+          COPYFILE_DISABLE=1 tar czvf "rules_apple_linker.$TAG.tar.gz" ./*
+          gh release create "$TAG" --title "$TAG" --target "$GITHUB_REF_NAME" --generate-notes "rules_apple_linker.$TAG.tar.gz"
+        env:
+          TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: create-release
+    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@d5e7cfa40eeb82eb0031f748d1d03c491535f9b5
+    with:
+      tag_name: ${{ inputs.tag }}
+      registry_fork: keith/bazel-central-registry
+      attest: true
+    secrets:
+      publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write

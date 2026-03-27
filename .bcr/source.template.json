@@ -1,5 +1,5 @@
 {
-    "url": "https://github.com/keith/rules_apple_linker/archive/refs/tags/{TAG}.tar.gz",
+    "url": "https://github.com/keith/rules_apple_linker/releases/download/{TAG}/rules_apple_linker.{TAG}.tar.gz",
     "integrity": "",
-    "strip_prefix": "rules_apple_linker-{TAG}"
+    "strip_prefix": ""
 }
