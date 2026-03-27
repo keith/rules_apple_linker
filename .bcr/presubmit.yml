@@ -1,18 +1,26 @@
+matrix:
+  bazel:
+    - 8.x
+    - 9.x
 tasks:
   verify_targets:
     name: Verify targets
     platform: macos
-    bazel: 7.x
+    bazel: ${{ bazel }}
     build_targets:
       - '@rules_apple_linker//:lld'
 
 bcr_test_module:
   module_path: ""
+  matrix:
+    bazel:
+      - 8.x
+      - 9.x
   tasks:
     run_test_module:
       name: "Run test module"
       platform: macos
-      bazel: 7.x
+      bazel: ${{ bazel }}
       build_targets:
         - '//test/...'
       test_targets:
