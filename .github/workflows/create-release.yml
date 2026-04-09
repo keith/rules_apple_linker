@@ -35,9 +35,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          gh release create "$TAG" --title "$TAG" --target "$GITHUB_REF_NAME" --generate-notes \
-            "rules_apple_linker.$TAG.tar.gz" \
-            "rules_apple_linker.$TAG.tar.gz.intoto.jsonl"
+          archive="rules_apple_linker.$TAG.tar.gz"
+          gh api repos/${{ github.repository }}/releases/generate-notes -f tag_name="$TAG" -f target_commitish="$GITHUB_REF_NAME" --jq .body > notes.md
+          ./.github/generate-notes.sh "$TAG" "$archive" >> notes.md
+          gh release create "$TAG" --title "$TAG" --target "$GITHUB_REF_NAME" --notes-file notes.md \
+            "$archive" \
+            "$archive.intoto.jsonl"
         env:
           TAG: ${{ inputs.tag }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
