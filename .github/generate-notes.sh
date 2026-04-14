@@ -22,7 +22,6 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "rules_apple_linker",
     sha256 = "$sha256",
-    strip_prefix = "rules_apple_linker-$new_version",
     urls = [
         "https://github.com/keith/rules_apple_linker/releases/download/$new_version/rules_apple_linker.$new_version.tar.gz",
     ],
