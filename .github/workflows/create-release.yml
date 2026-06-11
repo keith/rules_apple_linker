@@ -24,7 +24,7 @@ jobs:
           TAG: ${{ inputs.tag }}
       - name: Attest archive
         id: attest
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: rules_apple_linker.${{ inputs.tag }}.tar.gz
       - name: Prepare attestation
