@@ -17,7 +17,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: Create archive
         run: COPYFILE_DISABLE=1 tar czvf "rules_apple_linker.$TAG.tar.gz" ./*
         env:

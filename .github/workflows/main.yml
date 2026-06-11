@@ -15,7 +15,7 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.4.app
       - run: USE_BAZEL_VERSION=7.x bazelisk test //... --enable_bzlmod=true
