@@ -47,7 +47,7 @@ jobs:
 
   publish:
     needs: create-release
-    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@bb52f0ccbffe38ed0b552b1d187a73608ec1f749
+    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@c316f1611511a40423572303f66c80bb30bfe2f8
     with:
       tag_name: ${{ inputs.tag }}
       registry_fork: keith/bazel-central-registry
