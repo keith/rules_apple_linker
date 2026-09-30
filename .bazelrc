@@ -1,4 +1,5 @@
 common --lockfile_mode=off
+common --module_mirrors=https://bcr.cloudflaremirrors.com
 
 # Disable rules_cc toolchain so we use the one from apple_support
 build --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
